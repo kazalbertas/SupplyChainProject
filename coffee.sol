@@ -9,32 +9,51 @@ contract Coffee
         address to;
     }
     
-    string public contractId;
-
+    
+    string public batchId;
+    
+    // Approve section
+    address private approver = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c;
+    bool public approved = false;
+    
+    function approve() public returns(bool success){
+        if (msg.sender == approver) {
+            approved = true;
+            return true;
+        } 
+        return false;
+    }
+    ////////////////////////////////////////////////////
+    
+    
+    
+    
     address public owner;
     TransferEntry[] transfers;
     
     event TransferCompleted(
         address from,
         address to,
-        string contractId
+        string batchId
     );
     
-    constructor (string memory _cid) public
+    constructor (string memory _batchId) public
     {
-        contractId = _cid;
+        batchId = _batchId;
         owner = msg.sender;
     }
     
-    function changeContractID(string memory _cid) public {
-        contractId = _cid;
-    }
+    
+    
+    // function changeContractID(string memory _batchId) public {
+    //     batchId = _cid;
+    // }
     
     function transferOwnership(address newOwner) public returns(bool success){
         if (msg.sender == owner){
             owner = newOwner;
             transfers.push(TransferEntry(msg.sender,owner)); 
-            emit TransferCompleted(msg.sender,newOwner,contractId);
+            emit TransferCompleted(msg.sender,newOwner,batchId);
             return true;
         }
         return false;
