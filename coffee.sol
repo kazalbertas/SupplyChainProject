@@ -181,6 +181,7 @@ contract Coffee
         {
             transferslog.push(TransferOwnershipEntry(owner,futureOwner,payment));
             emit TransferCompleted(msg.sender,futureOwner,batchId);
+            inTransfer = false;
             owner = futureOwner;
             futureOwner = address(0);
             payment = address(0);
@@ -289,7 +290,7 @@ contract Coffee
             mod = address(0);
             return true;
         }
-        return true;
+        return false;
     } 
     
     
